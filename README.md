@@ -61,3 +61,9 @@ make swagger
 - **make compose-up**: Start all services (API and DB) with Docker Compose.
 - **make compose-down**: Stop all services started by Docker Compose.
 - **make api-logs**: View logs from the running API container.
+
+
+## Next steps
+- Create middleware for authentication and authorization
+- Improve logging for better traceability
+- Add versioning to the API
