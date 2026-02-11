@@ -3,6 +3,7 @@ package out
 import (
 	"database/sql"
 
+	"github.com/google/uuid"
 	"github.com/rlpaul93/order-fulfillment/internal/domain/model"
 )
 
@@ -14,7 +15,7 @@ func (r *ProductRepositoryPg) Create(product *model.Product) error {
 	return r.DB.QueryRow("INSERT INTO products(name) VALUES($1) RETURNING id", product.Name).Scan(&product.ID)
 }
 
-func (r *ProductRepositoryPg) GetByID(id int64) (*model.Product, error) {
+func (r *ProductRepositoryPg) GetByID(id uuid.UUID) (*model.Product, error) {
 	p := &model.Product{}
 	row := r.DB.QueryRow("SELECT id, name FROM products WHERE id=$1", id)
 	if err := row.Scan(&p.ID, &p.Name); err != nil {
@@ -28,7 +29,7 @@ func (r *ProductRepositoryPg) Update(product *model.Product) error {
 	return err
 }
 
-func (r *ProductRepositoryPg) Delete(id int64) error {
+func (r *ProductRepositoryPg) Delete(id uuid.UUID) error {
 	_, err := r.DB.Exec("DELETE FROM products WHERE id=$1", id)
 	return err
 }

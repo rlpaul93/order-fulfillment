@@ -8,9 +8,9 @@ import (
 // ProductRepository defines CRUD operations for products.
 type ProductRepository interface {
 	Create(product *model.Product) error
-	GetByID(id int64) (*model.Product, error)
+	GetByID(id uuid.UUID) (*model.Product, error)
 	Update(product *model.Product) error
-	Delete(id int64) error
+	Delete(id uuid.UUID) error
 	List() ([]*model.Product, error)
 }
 

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/google/uuid"
 	"github.com/rlpaul93/order-fulfillment/internal/domain/model"
 	"github.com/rlpaul93/order-fulfillment/internal/domain/port"
 )
@@ -14,7 +15,7 @@ func (s *ProductService) Create(product *model.Product) error {
 	return s.Repo.Create(product)
 }
 
-func (s *ProductService) GetByID(id int64) (*model.Product, error) {
+func (s *ProductService) GetByID(id uuid.UUID) (*model.Product, error) {
 	return s.Repo.GetByID(id)
 }
 
@@ -22,7 +23,7 @@ func (s *ProductService) Update(product *model.Product) error {
 	return s.Repo.Update(product)
 }
 
-func (s *ProductService) Delete(id int64) error {
+func (s *ProductService) Delete(id uuid.UUID) error {
 	return s.Repo.Delete(id)
 }
 
