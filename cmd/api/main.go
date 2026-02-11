@@ -1,19 +1,18 @@
 package main
 
 import (
-	"database/sql"
 	"log"
 	"net/http"
 
-	_ "github.com/lib/pq"
 	"github.com/rlpaul93/order-fulfillment/cmd/api/config"
 	"github.com/rlpaul93/order-fulfillment/cmd/api/factory"
+	"github.com/rlpaul93/order-fulfillment/internal/infrastructure/db"
 	"github.com/rlpaul93/order-fulfillment/internal/infrastructure/server"
 )
 
 func main() {
 	cfg := config.Load()
-	dbConn, err := sql.Open("postgres", cfg.DatabaseURL)
+	dbConn, err := db.NewConnection(cfg.DatabaseURL)
 	if err != nil {
 		log.Fatal(err)
 	}

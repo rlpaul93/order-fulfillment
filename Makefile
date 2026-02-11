@@ -3,7 +3,12 @@ GOBIN:=$(shell go env GOBIN)
 MIGRATE_BIN=$(GOBIN)/migrate
 DB_URL=postgres://user:password@localhost:5432/order_fulfillment?sslmode=disable
 
-.PHONY: migrate-create migrate-install migrate-up migrate-down docker-build docker-run compose-up compose-down api-logs
+.PHONY: migrate-create migrate-install migrate-up migrate-down docker-build docker-run compose-up compose-down api-logs test
+
+# Run all Go tests
+test:
+	go test ./...
+
 # View logs from the API container
 api-logs:
 	docker-compose logs -f api
