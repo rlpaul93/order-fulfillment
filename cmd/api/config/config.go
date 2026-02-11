@@ -8,6 +8,7 @@ type Config struct {
 	DatabaseURL string
 	APIPort     string
 	StorageMode string // "memory" (default) or "postgres"
+	SwaggerHost string // Host for Swagger UI (default: remote production URL)
 }
 
 func Load() *Config {
@@ -23,9 +24,14 @@ func Load() *Config {
 	if storageMode == "" {
 		storageMode = "memory"
 	}
+	swaggerHost := os.Getenv("SWAGGER_HOST")
+	if swaggerHost == "" {
+		swaggerHost = "order-fulfillment.onrender.com"
+	}
 	return &Config{
 		DatabaseURL: dbURL,
 		APIPort:     port,
 		StorageMode: storageMode,
+		SwaggerHost: swaggerHost,
 	}
 }

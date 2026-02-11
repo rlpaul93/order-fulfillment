@@ -7,10 +7,9 @@ import (
 
 	"github.com/rlpaul93/order-fulfillment/cmd/api/config"
 	"github.com/rlpaul93/order-fulfillment/cmd/api/factory"
+	"github.com/rlpaul93/order-fulfillment/docs"
 	"github.com/rlpaul93/order-fulfillment/internal/infrastructure/db"
 	"github.com/rlpaul93/order-fulfillment/internal/infrastructure/server"
-
-	_ "github.com/rlpaul93/order-fulfillment/docs"
 )
 
 // @title Order Fulfillment API
@@ -21,6 +20,10 @@ import (
 // @schemes http
 func main() {
 	cfg := config.Load()
+
+	// Set Swagger host dynamically
+	docs.SwaggerInfo.Host = cfg.SwaggerHost
+	log.Printf("Swagger host: %s", cfg.SwaggerHost)
 
 	var dbConn *sql.DB
 	if cfg.StorageMode == "postgres" {
