@@ -3,7 +3,7 @@ GOBIN:=$(shell go env GOBIN)
 MIGRATE_BIN=$(GOBIN)/migrate
 DB_URL=postgres://user:password@localhost:5432/order_fulfillment?sslmode=disable
 
-.PHONY: migrate-create migrate-install migrate-up migrate-down docker-build docker-run compose-up compose-down api-logs test
+.PHONY: migrate-create migrate-install migrate-up migrate-down docker-build docker-run compose-up compose-down api-logs test swagger
 
 # Run all Go tests
 test:
@@ -41,3 +41,7 @@ migrate-up:
 # Run all down migrations
 migrate-down:
 	$(MIGRATE_BIN) -path $(MIGRATIONS_DIR) -database $(DB_URL) down
+
+# Generate swagger documentation
+swagger:
+	go run github.com/swaggo/swag/cmd/swag@latest init -g cmd/api/main.go -o docs

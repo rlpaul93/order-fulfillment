@@ -1,0 +1,280 @@
+basePath: /
+definitions:
+  model.Pack:
+    properties:
+      id:
+        type: string
+      product_id:
+        type: string
+      size:
+        type: integer
+    type: object
+  model.Product:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  service.PackFulfillmentResult:
+    properties:
+      packs:
+        additionalProperties:
+          type: integer
+        description: pack size -> count
+        type: object
+      totalItems:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: REST API for product and pack management with optimal order fulfillment
+  title: Order Fulfillment API
+  version: "1.0"
+paths:
+  /fulfill:
+    get:
+      description: Given a product ID and quantity, returns the optimal combination
+        of packs that fulfills the order with minimal excess items and minimal pack
+        count
+      parameters:
+      - description: Product UUID
+        in: query
+        name: product_id
+        required: true
+        type: string
+      - description: Number of items to fulfill
+        in: query
+        name: quantity
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.PackFulfillmentResult'
+        "400":
+          description: Invalid product_id or quantity
+          schema:
+            type: string
+        "404":
+          description: No packs found for product
+          schema:
+            type: string
+      summary: Calculate optimal pack fulfillment
+      tags:
+      - Fulfillment
+  /packs:
+    get:
+      description: Get a list of packs for a specific product
+      parameters:
+      - description: Product UUID
+        in: query
+        name: product_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Pack'
+            type: array
+        "400":
+          description: Invalid product_id
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: List packs by product ID
+      tags:
+      - Packs
+    post:
+      consumes:
+      - application/json
+      description: Create a new pack for a product
+      parameters:
+      - description: Pack to create
+        in: body
+        name: pack
+        required: true
+        schema:
+          $ref: '#/definitions/model.Pack'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Pack'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Create a new pack
+      tags:
+      - Packs
+  /packs/{id}:
+    delete:
+      description: Delete a pack by its UUID
+      parameters:
+      - description: Pack UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: Pack deleted
+          schema:
+            type: string
+        "400":
+          description: Invalid pack ID
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Delete a pack by ID
+      tags:
+      - Packs
+    get:
+      description: Get a pack by its UUID
+      parameters:
+      - description: Pack UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Pack'
+        "400":
+          description: Invalid pack ID
+          schema:
+            type: string
+        "404":
+          description: Pack not found
+          schema:
+            type: string
+      summary: Get a pack by ID
+      tags:
+      - Packs
+  /products:
+    get:
+      description: Get a list of all products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Product'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: List all products
+      tags:
+      - Products
+    post:
+      consumes:
+      - application/json
+      description: Create a new product with a name
+      parameters:
+      - description: Product to create
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/model.Product'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Product'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Create a new product
+      tags:
+      - Products
+  /products/{id}:
+    delete:
+      description: Delete a product by its UUID
+      parameters:
+      - description: Product UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: Product deleted
+          schema:
+            type: string
+        "400":
+          description: Invalid product ID
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Delete a product by ID
+      tags:
+      - Products
+    get:
+      description: Get a product by its UUID
+      parameters:
+      - description: Product UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Product'
+        "400":
+          description: Invalid product ID
+          schema:
+            type: string
+        "404":
+          description: Product not found
+          schema:
+            type: string
+      summary: Get a product by ID
+      tags:
+      - Products
+schemes:
+- http
+swagger: "2.0"

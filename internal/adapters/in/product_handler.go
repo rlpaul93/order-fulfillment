@@ -10,7 +10,17 @@ import (
 	"github.com/rlpaul93/order-fulfillment/internal/domain/service"
 )
 
-// Handler for creating a product
+// CreateProductHandler godoc
+// @Summary Create a new product
+// @Description Create a new product with a name
+// @Tags Products
+// @Accept json
+// @Produce json
+// @Param product body model.Product true "Product to create"
+// @Success 201 {object} model.Product
+// @Failure 400 {string} string "Invalid request body"
+// @Failure 500 {string} string "Internal server error"
+// @Router /products [post]
 func CreateProductHandler(svc *service.ProductService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var p model.Product
@@ -30,7 +40,16 @@ func CreateProductHandler(svc *service.ProductService) http.HandlerFunc {
 	}
 }
 
-// Handler for getting a product by ID
+// GetProductHandler godoc
+// @Summary Get a product by ID
+// @Description Get a product by its UUID
+// @Tags Products
+// @Produce json
+// @Param id path string true "Product UUID"
+// @Success 200 {object} model.Product
+// @Failure 400 {string} string "Invalid product ID"
+// @Failure 404 {string} string "Product not found"
+// @Router /products/{id} [get]
 func GetProductHandler(svc *service.ProductService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		idStr := r.PathValue("id")
@@ -52,7 +71,15 @@ func GetProductHandler(svc *service.ProductService) http.HandlerFunc {
 	}
 }
 
-// Handler for deleting a product by ID
+// DeleteProductHandler godoc
+// @Summary Delete a product by ID
+// @Description Delete a product by its UUID
+// @Tags Products
+// @Param id path string true "Product UUID"
+// @Success 204 {string} string "Product deleted"
+// @Failure 400 {string} string "Invalid product ID"
+// @Failure 500 {string} string "Internal server error"
+// @Router /products/{id} [delete]
 func DeleteProductHandler(svc *service.ProductService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		idStr := r.PathValue("id")
@@ -72,7 +99,14 @@ func DeleteProductHandler(svc *service.ProductService) http.HandlerFunc {
 	}
 }
 
-// Handler for listing all products
+// ListProductsHandler godoc
+// @Summary List all products
+// @Description Get a list of all products
+// @Tags Products
+// @Produce json
+// @Success 200 {array} model.Product
+// @Failure 500 {string} string "Internal server error"
+// @Router /products [get]
 func ListProductsHandler(svc *service.ProductService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		products, err := svc.List()

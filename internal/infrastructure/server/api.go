@@ -3,6 +3,8 @@ package server
 import (
 	"net/http"
 
+	httpSwagger "github.com/swaggo/http-swagger"
+
 	"github.com/rlpaul93/order-fulfillment/internal/adapters/in"
 	"github.com/rlpaul93/order-fulfillment/internal/domain/service"
 )
@@ -10,6 +12,9 @@ import (
 // NewHandler sets up the HTTP routes and returns the handler
 func NewHandler(prodSvc *service.ProductService, packSvc *service.PackService, fulfillSvc *service.PackFulfillmentService) http.Handler {
 	mux := http.NewServeMux()
+
+	// Swagger UI
+	mux.HandleFunc("GET /swagger/", httpSwagger.WrapHandler)
 
 	// Product routes
 	mux.HandleFunc("POST /products", in.CreateProductHandler(prodSvc))

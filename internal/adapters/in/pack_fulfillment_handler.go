@@ -10,7 +10,17 @@ import (
 	"github.com/rlpaul93/order-fulfillment/internal/domain/service"
 )
 
-// Handler for pack fulfillment
+// PackFulfillmentHandler godoc
+// @Summary Calculate optimal pack fulfillment
+// @Description Given a product ID and quantity, returns the optimal combination of packs that fulfills the order with minimal excess items and minimal pack count
+// @Tags Fulfillment
+// @Produce json
+// @Param product_id query string true "Product UUID"
+// @Param quantity query int true "Number of items to fulfill"
+// @Success 200 {object} service.PackFulfillmentResult
+// @Failure 400 {string} string "Invalid product_id or quantity"
+// @Failure 404 {string} string "No packs found for product"
+// @Router /fulfill [get]
 func PackFulfillmentHandler(svc *service.PackFulfillmentService, packSvc *service.PackService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		productIDStr := r.URL.Query().Get("product_id")

@@ -10,7 +10,17 @@ import (
 	"github.com/rlpaul93/order-fulfillment/internal/domain/service"
 )
 
-// Handler for creating a pack
+// CreatePackHandler godoc
+// @Summary Create a new pack
+// @Description Create a new pack for a product
+// @Tags Packs
+// @Accept json
+// @Produce json
+// @Param pack body model.Pack true "Pack to create"
+// @Success 201 {object} model.Pack
+// @Failure 400 {string} string "Invalid request body"
+// @Failure 500 {string} string "Internal server error"
+// @Router /packs [post]
 func CreatePackHandler(svc *service.PackService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var p model.Pack
@@ -30,7 +40,16 @@ func CreatePackHandler(svc *service.PackService) http.HandlerFunc {
 	}
 }
 
-// Handler for getting a pack by ID
+// GetPackHandler godoc
+// @Summary Get a pack by ID
+// @Description Get a pack by its UUID
+// @Tags Packs
+// @Produce json
+// @Param id path string true "Pack UUID"
+// @Success 200 {object} model.Pack
+// @Failure 400 {string} string "Invalid pack ID"
+// @Failure 404 {string} string "Pack not found"
+// @Router /packs/{id} [get]
 func GetPackHandler(svc *service.PackService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		idStr := r.PathValue("id")
@@ -52,7 +71,15 @@ func GetPackHandler(svc *service.PackService) http.HandlerFunc {
 	}
 }
 
-// Handler for deleting a pack by ID
+// DeletePackHandler godoc
+// @Summary Delete a pack by ID
+// @Description Delete a pack by its UUID
+// @Tags Packs
+// @Param id path string true "Pack UUID"
+// @Success 204 {string} string "Pack deleted"
+// @Failure 400 {string} string "Invalid pack ID"
+// @Failure 500 {string} string "Internal server error"
+// @Router /packs/{id} [delete]
 func DeletePackHandler(svc *service.PackService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		idStr := r.PathValue("id")
@@ -72,7 +99,16 @@ func DeletePackHandler(svc *service.PackService) http.HandlerFunc {
 	}
 }
 
-// Handler for listing packs by product ID
+// ListPacksByProductHandler godoc
+// @Summary List packs by product ID
+// @Description Get a list of packs for a specific product
+// @Tags Packs
+// @Produce json
+// @Param product_id query string true "Product UUID"
+// @Success 200 {array} model.Pack
+// @Failure 400 {string} string "Invalid product_id"
+// @Failure 500 {string} string "Internal server error"
+// @Router /packs [get]
 func ListPacksByProductHandler(svc *service.PackService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		productIDStr := r.URL.Query().Get("product_id")
