@@ -62,6 +62,55 @@ make swagger
 - **make compose-down**: Stop all services started by Docker Compose.
 - **make api-logs**: View logs from the running API container.
 
+## Running the Full Solution Locally
+
+The solution includes three services: **Frontend** (React), **API** (Go), and **Database** (PostgreSQL). All can be run together using Docker Compose.
+
+### Prerequisites
+
+- Docker and Docker Compose installed
+- The frontend repository `order-form-ui` cloned as a sibling directory:
+  ```
+  /your-path/
+  ├── order-fulfillment/     # This repository
+  └── order-form-ui/         # Frontend repository
+  ```
+
+### Quick Start
+
+1. **Start all services:**
+   ```bash
+   make compose-up
+   ```
+
+2. **Run database migrations** (first time only):
+   ```bash
+   make migrate-up
+   ```
+
+3. **Access the applications:**
+   - **Frontend:** http://localhost:5173
+   - **API:** http://localhost:8080
+   - **Swagger UI:** http://localhost:8080/swagger/index.html
+
+4. **View logs:**
+   ```bash
+   make api-logs              # API logs only
+   docker-compose logs -f     # All services
+   ```
+
+5. **Stop all services:**
+   ```bash
+   make compose-down
+   ```
+
+### Services Overview
+
+| Service   | Port | Description                          |
+|-----------|------|--------------------------------------|
+| frontend  | 5173 | React application (Vite dev server)  |
+| api       | 8080 | Go REST API                          |
+| db        | 5432 | PostgreSQL database                  |
 
 ## Next steps
 - Create middleware for authentication and authorization
