@@ -1,4 +1,3 @@
-
 package config
 
 import (
@@ -8,6 +7,7 @@ import (
 type Config struct {
 	DatabaseURL string
 	APIPort     string
+	StorageMode string // "memory" (default) or "postgres"
 }
 
 func Load() *Config {
@@ -19,8 +19,13 @@ func Load() *Config {
 	if port == "" {
 		port = "8080"
 	}
+	storageMode := os.Getenv("STORAGE_MODE")
+	if storageMode == "" {
+		storageMode = "memory"
+	}
 	return &Config{
 		DatabaseURL: dbURL,
 		APIPort:     port,
+		StorageMode: storageMode,
 	}
 }

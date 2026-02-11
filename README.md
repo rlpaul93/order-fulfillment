@@ -41,6 +41,36 @@ This project follows a **hexagonal (ports and adapters) architecture**:
 
 This structure ensures separation of concerns, testability, and flexibility for future changes.
 
+## Storage Configuration
+
+The API supports two storage modes:
+
+| Mode | Description |
+|------|-------------|
+| `memory` (default) | In-memory storage, data resets on restart. Includes a seeded default product with packs (250, 500, 1000, 2000, 5000). |
+| `postgres` | PostgreSQL database for persistent storage. |
+
+### Environment Variable
+
+Set `STORAGE_MODE` to choose the storage backend:
+
+```bash
+# In-memory storage (default)
+STORAGE_MODE=memory go run ./cmd/api
+
+# PostgreSQL storage
+STORAGE_MODE=postgres DATABASE_URL="postgres://postgres:secret@localhost:5432/order_fulfillment?sslmode=disable" go run ./cmd/api
+```
+
+### Docker Compose
+
+The `docker-compose.yml` defaults to PostgreSQL. To run with in-memory storage, override the environment:
+
+```yaml
+environment:
+  - STORAGE_MODE=memory
+```
+
 ## API Documentation
 
 Swagger UI is available at: [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)

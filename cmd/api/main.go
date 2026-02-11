@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"net/http"
 
@@ -20,11 +21,19 @@ import (
 // @schemes http
 func main() {
 	cfg := config.Load()
-	dbConn, err := db.NewConnection(cfg.DatabaseURL)
-	if err != nil {
-		log.Fatal(err)
+
+	var dbConn *sql.DB
+	if cfg.StorageMode == "postgres" {
+		var err error
+		dbConn, err = db.NewConnection(cfg.DatabaseURL)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer dbConn.Close()
+		log.Println("Using PostgreSQL storage")
+	} else {
+		log.Println("Using in-memory storage")
 	}
-	defer dbConn.Close()
 
 	prodSvc, packSvc, fulfillSvc := factory.BuildServices(dbConn)
 	handler := server.NewHandler(prodSvc, packSvc, fulfillSvc)
