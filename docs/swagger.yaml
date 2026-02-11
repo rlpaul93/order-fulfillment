@@ -67,115 +67,6 @@ paths:
       summary: Calculate optimal pack fulfillment
       tags:
       - Fulfillment
-  /packs:
-    get:
-      description: Get a list of packs for a specific product
-      parameters:
-      - description: Product UUID
-        in: query
-        name: product_id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/model.Pack'
-            type: array
-        "400":
-          description: Invalid product_id
-          schema:
-            type: string
-        "500":
-          description: Internal server error
-          schema:
-            type: string
-      summary: List packs by product ID
-      tags:
-      - Packs
-    post:
-      consumes:
-      - application/json
-      description: Create a new pack for a product
-      parameters:
-      - description: Pack to create
-        in: body
-        name: pack
-        required: true
-        schema:
-          $ref: '#/definitions/model.Pack'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/model.Pack'
-        "400":
-          description: Invalid request body
-          schema:
-            type: string
-        "500":
-          description: Internal server error
-          schema:
-            type: string
-      summary: Create a new pack
-      tags:
-      - Packs
-  /packs/{id}:
-    delete:
-      description: Delete a pack by its UUID
-      parameters:
-      - description: Pack UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "204":
-          description: Pack deleted
-          schema:
-            type: string
-        "400":
-          description: Invalid pack ID
-          schema:
-            type: string
-        "500":
-          description: Internal server error
-          schema:
-            type: string
-      summary: Delete a pack by ID
-      tags:
-      - Packs
-    get:
-      description: Get a pack by its UUID
-      parameters:
-      - description: Pack UUID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/model.Pack'
-        "400":
-          description: Invalid pack ID
-          schema:
-            type: string
-        "404":
-          description: Pack not found
-          schema:
-            type: string
-      summary: Get a pack by ID
-      tags:
-      - Packs
   /products:
     get:
       description: Get a list of all products
@@ -273,6 +164,73 @@ paths:
           schema:
             type: string
       summary: Get a product by ID
+      tags:
+      - Products
+  /products/{id}/packs:
+    get:
+      description: Get all packs for a specific product
+      parameters:
+      - description: Product UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Pack'
+            type: array
+        "400":
+          description: Invalid product ID
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: List packs for a product
+      tags:
+      - Products
+    put:
+      consumes:
+      - application/json
+      description: Replace all packs for a product with a new list of sizes
+      parameters:
+      - description: Product UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Array of pack sizes
+        in: body
+        name: sizes
+        required: true
+        schema:
+          items:
+            type: integer
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Pack'
+            type: array
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Update packs for a product
       tags:
       - Products
 schemes:

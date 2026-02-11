@@ -60,171 +60,6 @@
                 }
             }
         },
-        "/packs": {
-            "get": {
-                "description": "Get a list of packs for a specific product",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Packs"
-                ],
-                "summary": "List packs by product ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Product UUID",
-                        "name": "product_id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.Pack"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid product_id",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Create a new pack for a product",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Packs"
-                ],
-                "summary": "Create a new pack",
-                "parameters": [
-                    {
-                        "description": "Pack to create",
-                        "name": "pack",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.Pack"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/model.Pack"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/packs/{id}": {
-            "get": {
-                "description": "Get a pack by its UUID",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Packs"
-                ],
-                "summary": "Get a pack by ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Pack UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/model.Pack"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid pack ID",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Pack not found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "Delete a pack by its UUID",
-                "tags": [
-                    "Packs"
-                ],
-                "summary": "Delete a pack by ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Pack UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Pack deleted",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid pack ID",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/products": {
             "get": {
                 "description": "Get a list of all products",
@@ -362,6 +197,107 @@
                     },
                     "400": {
                         "description": "Invalid product ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/{id}/packs": {
+            "get": {
+                "description": "Get all packs for a specific product",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Products"
+                ],
+                "summary": "List packs for a product",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product UUID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Pack"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid product ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Replace all packs for a product with a new list of sizes",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Update packs for a product",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product UUID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Array of pack sizes",
+                        "name": "sizes",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Pack"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
                         "schema": {
                             "type": "string"
                         }

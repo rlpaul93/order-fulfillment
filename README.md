@@ -12,7 +12,43 @@ This project follows a **hexagonal (ports and adapters) architecture**:
 - **Infrastructure**: Database, server, and external system integrations.
 - **API**: Entry point wiring up dependencies and HTTP routes.
 
+### Project Structure
+
+```
+.
+├── cmd/
+│   └── api/
+│       ├── main.go              # Application entry point
+│       ├── config/              # Configuration loading
+│       └── factory/             # Dependency injection / wiring
+├── docs/                        # Swagger generated documentation
+├── internal/
+│   ├── adapters/
+│   │   ├── in/                  # Inbound adapters (HTTP handlers)
+│   │   └── out/                 # Outbound adapters (DB repositories)
+│   ├── domain/
+│   │   ├── model/               # Domain entities (Product, Pack)
+│   │   ├── port/                # Interfaces (repository contracts)
+│   │   └── service/             # Business logic services
+│   └── infrastructure/
+│       ├── db/                  # Database connection
+│       └── server/              # HTTP server and routing
+├── Dockerfile
+├── docker-compose.yml
+├── Makefile
+└── go.mod
+```
+
 This structure ensures separation of concerns, testability, and flexibility for future changes.
+
+## API Documentation
+
+Swagger UI is available at: [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)
+
+To regenerate swagger docs after code changes, run:
+```bash
+make swagger
+```
 
 ## Makefile Commands
 

@@ -20,5 +20,6 @@ type PackRepository interface {
 	GetByID(id uuid.UUID) (*model.Pack, error)
 	Update(pack *model.Pack) error
 	Delete(id uuid.UUID) error
+	DeleteByProduct(productID uuid.UUID) error
 	ListByProduct(productID uuid.UUID) ([]*model.Pack, error)
 }

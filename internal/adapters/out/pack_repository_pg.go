@@ -34,6 +34,11 @@ func (r *PackRepositoryPg) Delete(id uuid.UUID) error {
 	return err
 }
 
+func (r *PackRepositoryPg) DeleteByProduct(productID uuid.UUID) error {
+	_, err := r.DB.Exec("DELETE FROM packs WHERE product_id=$1", productID)
+	return err
+}
+
 func (r *PackRepositoryPg) ListByProduct(productID uuid.UUID) ([]*model.Pack, error) {
 	rows, err := r.DB.Query("SELECT id, product_id, size FROM packs WHERE product_id=$1", productID)
 	if err != nil {

@@ -22,11 +22,9 @@ func NewHandler(prodSvc *service.ProductService, packSvc *service.PackService, f
 	mux.HandleFunc("GET /products/{id}", in.GetProductHandler(prodSvc))
 	mux.HandleFunc("DELETE /products/{id}", in.DeleteProductHandler(prodSvc))
 
-	// Pack routes
-	mux.HandleFunc("POST /packs", in.CreatePackHandler(packSvc))
-	mux.HandleFunc("GET /packs", in.ListPacksByProductHandler(packSvc))
-	mux.HandleFunc("GET /packs/{id}", in.GetPackHandler(packSvc))
-	mux.HandleFunc("DELETE /packs/{id}", in.DeletePackHandler(packSvc))
+	// Pack routes (nested under products)
+	mux.HandleFunc("GET /products/{id}/packs", in.ListPacksForProductHandler(packSvc))
+	mux.HandleFunc("PUT /products/{id}/packs", in.UpdatePacksForProductHandler(packSvc))
 
 	// Fulfillment route
 	mux.HandleFunc("GET /fulfill", in.PackFulfillmentHandler(fulfillSvc, packSvc))

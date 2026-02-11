@@ -33,6 +33,10 @@ func (m *mockPackRepository) Delete(id uuid.UUID) error {
 	return m.err
 }
 
+func (m *mockPackRepository) DeleteByProduct(productID uuid.UUID) error {
+	return m.err
+}
+
 func (m *mockPackRepository) ListByProduct(productID uuid.UUID) ([]*model.Pack, error) {
 	return m.packs, m.err
 }

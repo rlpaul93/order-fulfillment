@@ -30,3 +30,19 @@ func (s *PackService) Delete(id uuid.UUID) error {
 func (s *PackService) ListByProduct(productID uuid.UUID) ([]*model.Pack, error) {
 	return s.Repo.ListByProduct(productID)
 }
+
+// ReplaceByProduct deletes all existing packs for a product and creates new ones with the given sizes.
+func (s *PackService) ReplaceByProduct(productID uuid.UUID, sizes []int) ([]*model.Pack, error) {
+	if err := s.Repo.DeleteByProduct(productID); err != nil {
+		return nil, err
+	}
+	var packs []*model.Pack
+	for _, size := range sizes {
+		pack := &model.Pack{ProductID: productID, Size: size}
+		if err := s.Repo.Create(pack); err != nil {
+			return nil, err
+		}
+		packs = append(packs, pack)
+	}
+	return packs, nil
+}
