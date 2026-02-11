@@ -5,10 +5,11 @@ import (
 )
 
 type Config struct {
-	DatabaseURL string
-	APIPort     string
-	StorageMode string // "memory" (default) or "postgres"
-	SwaggerHost string // Host for Swagger UI (default: remote production URL)
+	DatabaseURL   string
+	APIPort       string
+	StorageMode   string // "memory" (default) or "postgres"
+	SwaggerHost   string // Host for Swagger UI (without scheme)
+	SwaggerScheme string // Scheme for Swagger UI: "http" or "https"
 }
 
 func Load() *Config {
@@ -26,12 +27,17 @@ func Load() *Config {
 	}
 	swaggerHost := os.Getenv("SWAGGER_HOST")
 	if swaggerHost == "" {
-		swaggerHost = "https://order-fulfillment.onrender.com"
+		swaggerHost = "order-fulfillment.onrender.com"
+	}
+	swaggerScheme := os.Getenv("SWAGGER_SCHEME")
+	if swaggerScheme == "" {
+		swaggerScheme = "https"
 	}
 	return &Config{
-		DatabaseURL: dbURL,
-		APIPort:     port,
-		StorageMode: storageMode,
-		SwaggerHost: swaggerHost,
+		DatabaseURL:   dbURL,
+		APIPort:       port,
+		StorageMode:   storageMode,
+		SwaggerHost:   swaggerHost,
+		SwaggerScheme: swaggerScheme,
 	}
 }

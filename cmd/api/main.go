@@ -21,9 +21,10 @@ import (
 func main() {
 	cfg := config.Load()
 
-	// Set Swagger host dynamically
+	// Set Swagger host and scheme dynamically
 	docs.SwaggerInfo.Host = cfg.SwaggerHost
-	log.Printf("Swagger host: %s", cfg.SwaggerHost)
+	docs.SwaggerInfo.Schemes = []string{cfg.SwaggerScheme}
+	log.Printf("Swagger: %s://%s", cfg.SwaggerScheme, cfg.SwaggerHost)
 
 	var dbConn *sql.DB
 	if cfg.StorageMode == "postgres" {
