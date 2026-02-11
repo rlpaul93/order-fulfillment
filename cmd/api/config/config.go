@@ -26,7 +26,7 @@ func Load() *Config {
 	}
 	swaggerHost := os.Getenv("SWAGGER_HOST")
 	if swaggerHost == "" {
-		swaggerHost = "order-fulfillment.onrender.com"
+		swaggerHost = "https://order-fulfillment.onrender.com"
 	}
 	return &Config{
 		DatabaseURL: dbURL,
